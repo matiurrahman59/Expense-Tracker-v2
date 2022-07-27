@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { signOutUser } from '../firebase/config';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase/config';
 import { useAuthContext } from './useAuthContetx';
 
 export const useLogout = () => {
@@ -14,7 +15,8 @@ export const useLogout = () => {
 
     // sign the user out
     try {
-      await signOutUser();
+      //  signOutUser();
+      await signOut(auth);
 
       // dispatch logout action
       dispatch({ type: 'LOGOUT' });
@@ -33,6 +35,7 @@ export const useLogout = () => {
     }
   };
 
+  // cleanup f when component unmount
   useEffect(() => {
     return () => setIsCancelled(true);
   }, []);

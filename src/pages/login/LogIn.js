@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useAuthContext } from '../../hooks/useAuthContetx';
 import { useLogin } from '../../hooks/useLogin';
 
+// styles
 import styles from './LogIn.module.css';
 
 const LogIn = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  // hooks
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  // custom hooks
   const { login, error, isPending } = useLogin();
+  const { user } = useAuthContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     login(email, password);
   };
+
+  // redirect if user find
+  useEffect(() => {
+    if (user && pathname === '/login') {
+      navigate('/');
+    }
+  }, [user, navigate, pathname]);
 
   return (
     <form onSubmit={handleSubmit} className={styles['login-form']}>
@@ -21,6 +38,7 @@ const LogIn = () => {
         <input
           type='email'
           onChange={(e) => setEmail(e.target.value)}
+          autoComplete='true'
           value={email}
         />
       </label>
@@ -29,6 +47,7 @@ const LogIn = () => {
         <input
           type='password'
           onChange={(e) => setPassword(e.target.value)}
+          autoComplete='true'
           value={password}
         />
       </label>

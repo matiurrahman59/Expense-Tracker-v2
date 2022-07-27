@@ -25,11 +25,14 @@ const Navbar = () => {
         )}
 
         {user && (
-          <li>
-            <button className='btn' onClick={logout}>
-              Logout
-            </button>
-          </li>
+          <>
+            <li>hello, {user.displayName}</li>
+            <li>
+              <button className='btn' onClick={logout}>
+                Logout
+              </button>
+            </li>
+          </>
         )}
       </ul>
     </nav>
